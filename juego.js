@@ -23,7 +23,7 @@ var reproducciones = 0;
 // contexto.fillRect(0,12,tamanoCelula,tamanoCelula)
 // contexto.fillRect(12,12,tamanoCelula,tamanoCelula)
 var vivas = [];
-
+var muertas = [];
 //alert("un mensaje");
 class Celula{
     constructor(x, y){
@@ -110,6 +110,7 @@ btnIniciar.addEventListener('click', function(e) {
             return;
         }
         vivas = [];
+        muertas =[];
         jugando = true;
         //contexto.clearRect(0,0,500,500);
         proceso = setTimeout(run, 30);
@@ -129,6 +130,7 @@ btnResetear.addEventListener('click', function(e){
         reproducciones = 0;
         tablero = new Array(tamanoTablero);
         vivas = [];
+        muertas = [];
         lblCorridas.innerHTML = reproducciones;
         llenarTablero();
     }
@@ -191,7 +193,8 @@ function iniciar(){
                         vivas.push(celula);
                         //console.log('viva');
                     }else{
-                        celula.status = 0;
+                        //celula.status = 0;
+                        muertas.push(celula);
                         //console.log('muerta');
                     }
 
@@ -223,7 +226,7 @@ function iniciar(){
                         vivasAlrededorM ++;
                     
                     if(vivasAlrededorM == 3){
-                        celula.status = 1;
+                        //celula.status = 1;
                         vivas.push(celula);
                         //console.log('viva');
                     }  
@@ -238,7 +241,7 @@ function llenarCanvas(){
     //console.log('llenar canvas');
     let randomsInput = inputRandoms.value;
     if(randomsInput == ''){
-        randomsInput = 450;
+        randomsInput = 600;
     }
     //const randoms = 450;
     for (let i = 0; i < randomsInput; i++) {
@@ -257,8 +260,17 @@ function pintarVivas(){
     lblCorridas.innerHTML = reproducciones;
     for (let i = 0; i < vivas.length; i++) {
         let celula = vivas[i];
+        celula.status = 1;
         let newX = celula.x * tamanoCelula;
         let newY = celula.y * tamanoCelula;
         contexto.fillRect(newX,newY,tamanoCelula,tamanoCelula);
+    }
+    actualizarMuertas();
+}
+
+function actualizarMuertas(){
+    for (let i = 0; i < muertas.length; i++) {
+        let celula = muertas[i];
+        celula.status = 0;
     }
 }
